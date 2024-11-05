@@ -15,4 +15,46 @@
         <input type="text" id="shareUrl" name="shareUrl" required><br><br>
         
         <label for="shareCount">Share Count:</label><br>
-        <input type="number" id="shareCount" name="share
+        <input type="number" id="shareCount" name="share Count" required><br><br>
+        
+        <label for="timeInterval">Time Interval (ms):</label><br>
+        <input type="number" id="timeInterval" name="timeInterval" value="1500" required><br><br>
+        
+        <label for="deleteAfter">Delete After (seconds):</label><br>
+        <input type="number" id="deleteAfter" name="deleteAfter" value="3600" required><br><br>
+        
+        <button type="submit">Start Sharing</button>
+        <button type="button" id="stopButton">Stop Sharing</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('shareForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/start-sharing', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            document.getElementById('message').innerText = result.message;
+        });
+
+        document.getElementById('stopButton').addEventListener('click', async () => {
+            const response = await fetch('/stop-sharing', {
+                method: 'POST',
+            });
+
+            const result = await response.json();
+            document.getElementById('message').innerText = result.message;
+        });
+    </script>
+</body>
+    </html>
