@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shareboost Aktibaytid</title>
+    <link rel="stylesheet" href="styles/styles.css"> <!-- Link to the CSS file -->
 </head>
 <body>
     <h1>Shareboost Aktibaytid</h1>
     <form id="shareForm">
-        <label for="accessToken">Access Token:</label><br>
-        <input type="text" id="accessToken" name="accessToken" required><br><br>
+        <label for="accessToken">Access Token:</label>
+        <input type="text" id="accessToken" name="accessToken" required>
         
-        <label for="shareUrl">Share URL:</label><br>
-        <input type="text" id="shareUrl" name="shareUrl" required><br><br>
+        <label for="shareUrl">Share URL:</label>
+        <input type="text" id="shareUrl" name="shareUrl" required>
         
-        <label for="shareCount">Share Count:</label><br>
-        <input type="number" id="shareCount" name="share Count" required><br><br>
+        <label for="shareCount">Share Count:</label>
+        <input type="number" id="shareCount" name="shareCount" required>
         
-        <label for="timeInterval">Time Interval (ms):</label><br>
-        <input type="number" id="timeInterval" name="timeInterval" value="1500" required><br><br>
+        <label for="timeInterval">Time Interval (ms):</label>
+        <input type="number" id="timeInterval" name="timeInterval" value="1500" required>
         
-        <label for="deleteAfter">Delete After (seconds):</label><br>
-        <input type="number" id="deleteAfter" name="deleteAfter" value="3600" required><br><br>
+        <label for="deleteAfter">Delete After (seconds):</label>
+        <input type="number" id="deleteAfter" name="deleteAfter" value="3600" required>
         
         <button type="submit">Start Sharing</button>
         <button type="button" id="stopButton">Stop Sharing</button>
@@ -57,4 +58,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
