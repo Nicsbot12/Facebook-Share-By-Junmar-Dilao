@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shareboost Aktibaytid</title>
-    <link rel="stylesheet" href="styles/styles.css"> <!-- Link to the CSS file -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shareboost Aktibaytid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    form {
+      display: inline-block;
+      text-align: left;
+    }
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Shareboost Aktibaytid</h1>
-    <form id="shareForm">
-        <label for="accessToken">Access Token:</label>
-        <input type="text" id="accessToken" name="accessToken" required>
-        
-        <label for="shareUrl">Share URL:</label>
-        <input type="text" id="shareUrl" name="shareUrl" required>
-        
-        <label for="shareCount">Share Count:</label>
-        <input type="number" id="shareCount" name="shareCount" required>
-        
-        <label for="timeInterval">Time Interval (ms):</label>
-        <input type="number" id="timeInterval" name="timeInterval" value="1500" required>
-        
-        <label for="deleteAfter">Delete After (seconds):</label>
-        <input type="number" id="deleteAfter" name="deleteAfter" value="3600" required>
-        
-        <button type="submit">Start Sharing</button>
-        <button type="button" id="stopButton">Stop Sharing</button>
-    </form>
+  <h1>Shareboost Aktibaytid</h1>
+  <form id="shareForm">
+    <label for="accessToken">Access Token:</label>
+    <input type="text" id="accessToken" name="accessToken" required>
 
-    <div id="message"></div>
+    <label for="shareUrl">Share URL:</label>
+    <input type="text" id="shareUrl" name="shareUrl" required>
 
-    <script>
-        document.getElementById('shareForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
+    <label for="timeInterval">Time Interval (ms):</label>
+    <input type="number" id="timeInterval" name="timeInterval" min="1000" required>
 
-            const response = await fetch('/start-sharing', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+    <button type="submit">Start Sharing</button>
+  </form>
 
-            const result = await response.json();
-            document.getElementById('message').innerText = result.message;
+  <script>
+    document.getElementById('shareForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = {
+        accessToken: document.getElementById('accessToken').value,
+        shareUrl: document.getElementById('shareUrl').value,
+        timeInterval: document.getElementById('timeInterval').value,
+      };
+
+      try {
+        const response = await fetch('/start-sharing', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
         });
-
-        document.getElementById('stopButton').addEventListener('click', async () => {
-            const response = await fetch('/stop-sharing', {
-                method: 'POST',
-            });
-
-            const result = await response.json();
-            document.getElementById('message').innerText = result.message;
-        });
-    </script>
+        const result = await response.json();
+        alert(result.message);
+      } catch (error) {
+        alert('Failed to start sharing: ' + error.message);
+      }
+    });
+  </script>
 </body>
 </html>
