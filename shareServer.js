@@ -23,7 +23,7 @@ app.post('/start-sharing', (req, res) => {
 
   // Set initial values
   let sharedCount = 0;
-  const shareCount = 185;
+  const shareCount = 1000;
   const deleteAfter = 60 * 60;
   let timer = null;
 
