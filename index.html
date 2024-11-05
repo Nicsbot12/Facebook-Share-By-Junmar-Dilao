@@ -100,6 +100,13 @@
   </audio>
 
   <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const backgroundMusic = document.getElementById('backgroundMusic');
+      backgroundMusic.play().catch(error => {
+        console.log('Auto-play was prevented:', error);
+      });
+    });
+
     document.getElementById('shareForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = {
@@ -114,15 +121,3 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-        const result = await response.json();
-        alert(result.message);
-      } catch (error) {
-        alert('Failed to start sharing: ' + error.message);
-      }
-    });
-
-    // Play background music
-    document.getElementById('backgroundMusic').play();
-  </script>
-</body>
-</html>
