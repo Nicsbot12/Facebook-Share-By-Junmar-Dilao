@@ -7,80 +7,97 @@
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to right, #1c1c2f, #2a2a72);
-      color: #ffffff;
       text-align: center;
       padding: 20px;
-      margin: 0;
+      background: linear-gradient(to right, #1c1c1c, #3a3a3a);
+      color: #fff;
       height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      animation: backgroundAnimation 10s infinite alternate;
-    }
-
-    @keyframes backgroundAnimation {
-      0% { background: linear-gradient(to right, #1c1c2f, #2a2a72); }
-      100% { background: linear-gradient(to right, #2a2a72, #1c1c2f); }
+      margin: 0;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin-bottom: 30px;
+      font-size: 3.5em;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.7);
+      }
     }
 
     form {
-      display: inline-block;
-      text-align: left;
       background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      width: 350px;
+      margin: auto;
+      transition: transform 0.3s;
     }
 
-    label, input {
+    form:hover {
+      transform: scale(1.02);
+    }
+
+    label {
+      color: #00ffff;
+      margin: 10px 0 5px;
       display: block;
-      margin: 10px 0;
-      color: #ffffff;
+      font-size: 1.1em;
     }
 
     input {
+      width: calc(100% - 20px);
       padding: 10px;
+      margin: 10px 0;
       border: none;
       border-radius: 5px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+      font-size: 1em;
+      transition: box-shadow 0.3s;
     }
 
     input:focus {
       outline: none;
-      box-shadow: 0 0 5px #ffffff;
+      box-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
     }
 
     button {
       margin-top: 10px;
       padding: 10px;
+      background-color: #00bcd4;
+      color: white;
       border: none;
       border-radius: 5px;
-      background: #ff4081;
-      color: #ffffff;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-size: 1.1em;
+      transition: background-color 0.3s, transform 0.3s;
+      width: 100%;
     }
 
     button:hover {
-      background: #ff79b0;
+      background-color: #0097a7;
+      transform: translateY(-2px);
     }
 
-    audio {
-      display: none; /* Hide the audio player */
+    button:active {
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <h1>Shareboost By Junmar Dilao</h1>
+  <h1>Shareboost Junmar Dilao</h1>
   <form id="shareForm">
     <label for="accessToken">Access Token:</label>
     <input type="text" id="accessToken" name="accessToken" required>
@@ -94,25 +111,13 @@
     <button type="submit">Start Sharing</button>
   </form>
 
-  <audio id="backgroundMusic" loop>
-    <source src="https://github.com/Nicsbot12/Facebook-Share-By-Junmar-Dilao/raw/refs/heads/main/ZWE1HVNDXR,%20yatashigang%20-%20LOVELY%20BASTARDS%20(slowed).mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
   <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const backgroundMusic = document.getElementById('backgroundMusic');
-      backgroundMusic.play().catch(error => {
-        console.log('Auto-play was prevented:', error);
-      });
-    });
-
     document.getElementById('shareForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = {
         accessToken: document.getElementById('accessToken').value,
         shareUrl: document.getElementById('shareUrl').value,
-        timeInterval: document.getElementById('timeInterval').value,
+        timeInterval: document.getElement('timeInterval').value,
       };
 
       try {
@@ -121,6 +126,12 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-        </script>
+        const result = await response.json();
+        alert(result.message);
+      } catch (error) {
+        alert('Failed to start sharing: ' + error.message);
+      }
+    });
+  </script>
 </body>
 </html>
