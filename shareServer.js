@@ -21,10 +21,10 @@ app.post('/start-sharing', (req, res) => {
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
-  // Set initial values
+  // Initial values
   let sharedCount = 0;
   const shareCount = 1000;
-  const deleteAfter = 60 * 60;
+  const deleteAfter = 60 * 60; // in seconds
   let timer = null;
 
   async function sharePost() {
@@ -68,10 +68,10 @@ app.post('/start-sharing', (req, res) => {
     }
   }
 
-  // Start the sharing timer based on user input
+  // Start sharing timer
   timer = setInterval(sharePost, timeInterval);
 
-  // Stop the loop after the set number of shares
+  // Stop loop after set number of shares
   setTimeout(() => {
     clearInterval(timer);
     api.sendMessage('Loop stopped.');
@@ -81,4 +81,4 @@ app.post('/start-sharing', (req, res) => {
 });
 
 app.listen(3000, () => api.sendMessage('App listening on port 3000!'));
-    
+      
