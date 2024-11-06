@@ -1,8 +1,10 @@
 const axios = require('axios');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser()); // Add cookie-parser middleware
 app.use(express.static(__dirname)); // Serve HTML file
 
 function sendMessage(output) {
@@ -15,7 +17,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/start-sharing', (req, res) => {
-  const { accessToken, shareUrl, timeInterval } = req.body;
+  const { shareUrl, timeInterval } = req.body;
+  const accessToken = req.cookies.accessToken; // Get accessToken from cookies
 
   if (!accessToken || !shareUrl || !timeInterval) {
     return res.status(400).json({ message: 'Missing required fields.' });
@@ -80,6 +83,16 @@ app.post('/start-sharing', (req, res) => {
   }, shareCount * timeInterval);
 
   res.json({ message: 'Started sharing posts.' });
+});
+
+// Set the access token in a cookie (for demonstration purposes)
+app.post('/set-token', (req, res) => {
+  const { accessToken } = req.body;
+  if (!accessToken) {
+    return res.status(400).json({ message: 'Access token is required.' });
+  }
+  res.cookie('accessToken', accessToken, { maxAge: 900000, httpOnly: true }); // Set cookie with 15 minutes expiration
+  res.json({ message: 'Access token set in cookie.' });
 });
 
 app.listen(3000, () => api.sendMessage('App listening on port 3000!'));
