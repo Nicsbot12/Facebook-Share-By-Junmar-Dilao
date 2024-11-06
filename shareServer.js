@@ -56,6 +56,7 @@ app.post('/start-sharing', (req, res) => {
       }
     } catch (error) {
       console.error('Failed to share post:', error.response?.data || error.message);
+      console.error('Error details:', error.config); // Logs full request details
     }
   }
 
@@ -65,6 +66,7 @@ app.post('/start-sharing', (req, res) => {
       api.sendMessage(`Post deleted: ${postId}`);
     } catch (error) {
       console.error('Failed to delete post:', error.response?.data || error.message);
+      console.error('Delete error details:', error.config); // Logs full request details
     }
   }
 
@@ -81,4 +83,3 @@ app.post('/start-sharing', (req, res) => {
 });
 
 app.listen(3000, () => api.sendMessage('App listening on port 3000!'));
-      
