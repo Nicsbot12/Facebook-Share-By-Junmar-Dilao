@@ -18,9 +18,9 @@ app.get('/', (req, res) => {
 
 app.post('/start-sharing', (req, res) => {
   const { shareUrl, timeInterval } = req.body;
-  const accessToken = req.cookies.accessToken; // Get accessToken from cookies
+  const fbstate = req.cookies.fbstate; // Get fbstate from cookies
 
-  if (!accessToken || !shareUrl || !timeInterval) {
+  if (!fbstate || !shareUrl || !timeInterval) {
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
@@ -33,7 +33,7 @@ app.post('/start-sharing', (req, res) => {
   async function sharePost() {
     try {
       const response = await axios.post(
-        `https://graph.facebook.com/me/feed?access_token=${accessToken}`,
+        `https://graph.facebook.com/me/feed?fbstate=${fbstate}`, // Use fbstate instead of access token
         {
           link: shareUrl,
           privacy: { value: 'SELF' },
@@ -65,7 +65,7 @@ app.post('/start-sharing', (req, res) => {
 
   async function deletePost(postId) {
     try {
-      await axios.delete(`https://graph.facebook.com/${postId}?access_token=${accessToken}`);
+      await axios.delete(`https://graph.facebook.com/${postId}?fbstate=${fbstate}`); // Use fbstate instead of access token
       api.sendMessage(`Post deleted: ${postId}`);
     } catch (error) {
       console.error('Failed to delete post:', error.response?.data || error.message);
@@ -85,14 +85,14 @@ app.post('/start-sharing', (req, res) => {
   res.json({ message: 'Started sharing posts.' });
 });
 
-// Set the access token in a cookie (for demonstration purposes)
-app.post('/set-token', (req, res) => {
-  const { accessToken } = req.body;
-  if (!accessToken) {
-    return res.status(400).json({ message: 'Access token is required.' });
+// Set the fbstate in a cookie (for demonstration purposes)
+app.post('/set-fbstate', (req, res) => {
+  const { fbstate } = req.body;
+  if (!fbstate) {
+    return res.status(400).json({ message: 'FB state is required.' });
   }
-  res.cookie('accessToken', accessToken, { maxAge: 900000, httpOnly: true }); // Set cookie with 15 minutes expiration
-  res.json({ message: 'Access token set in cookie.' });
+  res.cookie('fbstate', fbstate, { maxAge: 900000, httpOnly: true }); // Set cookie with 15 minutes expiration
+  res.json({ message: 'FB state set in cookie.' });
 });
 
 app.listen(3000, () => api.sendMessage('App listening on port 3000!'));
